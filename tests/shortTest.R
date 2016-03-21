@@ -26,8 +26,8 @@ reg1 = read.table("data/regionsToExclude")
 
 
 #make an output directory, deleting old results first if they exist
-suppressWarnings(dir.create("results"))
-unlink("results/*", recursive=TRUE)
+suppressWarnings(dir.create("results.new"))
+unlink("results.new/*", recursive=TRUE)
 
 
 cat("\n")
@@ -42,21 +42,10 @@ sc = sciClone(vafs=v1,
          copyNumberCalls=cn1,
          sampleNames=names[1],
          regionsToExclude=reg1)
-writeClusterTable(sc, "results/clusters1")
-sc.plot1d(sc,"results/clusters1.1d.pdf")
+writeClusterTable(sc, "results.new/clusters1")
+sc.plot1d(sc,"results.new/clusters1.1d.pdf")
 
 
-
-
-
-## #run only one sample, but all sites are removed by excluded regions
-## #should fail with "can't do clustering - no copy number 2 regions to operate on in sample 1"
-## sciClone(vafs=v1,
-##          regionsToExclude=regions,
-##          copyNumberCalls=cn1,
-##          sampleNames=names,
-##          outputPrefix="test.results/shortTest1",
-##          overlayClusters=TRUE)
 
 cat("\n")
 cat("=========================================================\n")
@@ -66,9 +55,9 @@ cat("\n")
 sc = sciClone(vafs=list(v1,v2),
               copyNumberCalls=list(cn1,cn2),
               sampleNames=names[1:2])
-writeClusterTable(sc, "results/clusters2")
-sc.plot1d(sc,"results/clusters2.1d.pdf")
-sc.plot2d(sc,"results/clusters2.2d.pdf")
+writeClusterTable(sc, "results.new/clusters2")
+sc.plot1d(sc,"results.new/clusters2.1d.pdf")
+sc.plot2d(sc,"results.new/clusters2.2d.pdf")
 
 
 
@@ -95,7 +84,14 @@ sc = sciClone(vafs=list(v1,v2,v3),
               copyNumberCalls=list(cn1,cn2,cn2),
               sampleNames=names,
               regionsToExclude=list(reg1,reg1))
-writeClusterTable(sc, "results/clusters3")
-sc.plot1d(sc,"results/clusters3.1d.pdf")
-sc.plot2d(sc,"results/clusters3.2d.pdf")
-sc.plot3d(sc, sc@sampleNames, size=700, outputFile="results/clusters3.3d.gif")
+writeClusterTable(sc, "results.new/clusters3")
+sc.plot1d(sc,"results.new/clusters3.1d.pdf")
+sc.plot2d(sc,"results.new/clusters3.2d.pdf")
+sc.plot3d(sc, sc@sampleNames, size=700, outputFile="results.new/clusters3.3d.gif")
+
+
+cat("\n")
+cat("=========================================================\n")
+cat("Done - compare output in results.new/ to results/ May be slight differences in p-vals")
+cat("due to RNG, rounding, etc, but otherwise should be identical")
+cat("\n")
